@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviour
     public float dashSpeed = 15f;
     public float dashCD =1;
     public float dashLength = 0.2f;
-    public int stage = 3;
     
     float moveSpeed;
     Vector2 dir;
@@ -49,16 +48,16 @@ public class PlayerMovement : MonoBehaviour
         dir.x = Input.GetAxis("Horizontal");
         transform.Translate(dir * speed*Time.deltaTime);
         
-        if (canJump && Input.GetKeyDown(jumpKey) && !isDashing && stage >= 1) {
+        if (canJump && Input.GetKeyDown(jumpKey) && !isDashing ) {
             Jump();
         }
 
-        if(canDash && Input.GetKeyDown(DashKey))
+        if(canDash && Input.GetKeyDown(DashKey) && GameManager.instance.stage >= 1)
         {
             Dash();
         }
 
-        if (Input.GetKeyDown(cavingKey))
+        if (Input.GetKeyDown(cavingKey) && GameManager.instance.stage > 2)
         {
             isCaving = true;
         }else if (isCaving)
@@ -68,10 +67,10 @@ public class PlayerMovement : MonoBehaviour
 
         
 
-        //if (Input.GetKeyDown(bugKey))
-        //{
-        //    bug()
-        //}
+        if (Input.GetKeyDown(bugKey) && GameManager.instance.stage >= 2)
+        {
+            Bug();
+        }
 
     }
     private void FixedUpdate()
@@ -81,7 +80,6 @@ public class PlayerMovement : MonoBehaviour
     private void Dash()
     {
         isDashing = true;
-        anim.SetBool("Dashing",true);
         canDash = false;
         lateralInertia = rb.velocity.x;
         rb.velocity = new Vector2(rb.velocity.x, 0); //para la inercia vertical
@@ -91,13 +89,16 @@ public class PlayerMovement : MonoBehaviour
     }
     private void StopDash()
     {
-        anim.SetBool("Dashing",false);
         isDashing = false;
         rb.velocity = new Vector2(rb.velocity.y,lateralInertia);
     }
     private void ResetDash()
     {
         canDash = true;
+    }
+
+    private void Bug()
+    {
     }
     private void Jump()
     {

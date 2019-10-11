@@ -13,7 +13,7 @@ public class BugWall : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && Input.GetKey(key) && Player.stage >= 2)
+        if (collision.gameObject.tag == "Player" && Input.GetKey(key) && GameManager.instance.stage >= 2)
         {
 
             Destroy(this.gameObject);
