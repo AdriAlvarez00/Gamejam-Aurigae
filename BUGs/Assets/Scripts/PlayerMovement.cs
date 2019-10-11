@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
     private void Dash()
     {
         isDashing = true;
+        anim.SetBool("Dashing",true);
         canDash = false;
         lateralInertia = rb.velocity.x;
         rb.velocity = new Vector2(rb.velocity.x, 0); //para la inercia vertical
@@ -90,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void StopDash()
     {
+        anim.SetBool("Dashing",false);
         isDashing = false;
         rb.velocity = new Vector2(rb.velocity.y,lateralInertia);
     }
