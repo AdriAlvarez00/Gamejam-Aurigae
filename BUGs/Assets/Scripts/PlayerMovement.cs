@@ -14,17 +14,21 @@ public class PlayerMovement : MonoBehaviour
     
     float moveSpeed;
     Vector2 dir;
-    bool isJumping;
+    bool canJump;
+    bool isCaving;
     bool canDash;
-    public KeyCode jumpKey,DashKey;
+    public KeyCode jumpKey,DashKey,cavingKey,bugKey;
     private float lateralInertia;
+    bool isDashing = false;
     // Start is called before the first frame update
     void Start()
     {
         moveSpeed = speed;
         dir = new Vector2(0, 0);
-        isJumping = false;
+        canJump = false;
+        isCaving = false;
         canDash = true;
+
         rb = GetComponent<Rigidbody2D>();
         if (!rb) Debug.Log("Mete el rigidbody",this);
     }
@@ -35,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         dir.x = Input.GetAxis("Horizontal");
         transform.Translate(dir * speed*Time.deltaTime);
         
-        if (!isJumping && Input.GetKeyDown(jumpKey)) {
+        if (canJump && Input.GetKeyDown(jumpKey) && !isDashing) {
             Jump();
         }
 
@@ -44,6 +48,19 @@ public class PlayerMovement : MonoBehaviour
             Dash();
         }
 
+        if (Input.GetKeyDown(cavingKey))
+        {
+            isCaving = true;
+        }else if (isCaving)
+        {
+            isCaving = false;
+        }
+
+        //if (Input.GetKeyDown(bugKey))
+        //{
+        //    bug()
+        //}
+
     }
     private void FixedUpdate()
     {
@@ -51,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Dash()
     {
+        isDashing = true;
         canDash = false;
         lateralInertia = rb.velocity.x;
         rb.velocity = new Vector2(rb.velocity.x, 0); //para la inercia vertical
@@ -60,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void StopDash()
     {
+        isDashing = false;
         rb.velocity = new Vector2(rb.velocity.y,lateralInertia);
     }
     private void ResetDash()
@@ -68,11 +87,14 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
+        canJump = false;
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground") && isJumping)
-            isJumping = false;
+        if (collision.gameObject.CompareTag("Ground"))
+            canJump = true;
     }
+
+
 }
