@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    public string levelName;
     public int stage = 3;
     public AudioClip clip2, clip3;
     void Awake()
@@ -33,6 +34,10 @@ public class GameManager : MonoBehaviour
         {
             stage--;
             SceneManager.LoadScene(1);
+        }
+        else
+        {
+            SceneManager.LoadScene(levelName);
         }
         
     }
