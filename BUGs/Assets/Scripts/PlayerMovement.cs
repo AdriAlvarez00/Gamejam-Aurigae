@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
+    Animator anim;
     public float speed = 5f;
     public float acc = 2f;
     public float jumpForce = 5f;
@@ -31,6 +32,14 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         if (!rb) Debug.Log("Mete el rigidbody",this);
+
+        anim = GetComponent<Animator>();
+        if (!anim) Debug.Log("Mete el animator", this);
+        else
+        {
+            anim.SetBool("HitGround", false);
+            anim.SetBool("Jumping", false);
+        }
     }
 
     // Update is called once per frame
@@ -88,12 +97,18 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         canJump = false;
+        anim.SetBool("Jumping", true);
+        anim.SetBool("HitGround", false);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") && canJump == false)
+        {
             canJump = true;
+            anim.SetBool("HitGround", true);
+            anim.SetBool("Jumping", false);
+        }
     }
 
 
