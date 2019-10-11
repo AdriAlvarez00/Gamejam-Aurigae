@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashSpeed = 15f;
     public float dashCD =1;
     public float dashLength = 0.2f;
+    public int stage = 3;
     
     float moveSpeed;
     Vector2 dir;
@@ -48,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         dir.x = Input.GetAxis("Horizontal");
         transform.Translate(dir * speed*Time.deltaTime);
         
-        if (canJump && Input.GetKeyDown(jumpKey) && !isDashing) {
+        if (canJump && Input.GetKeyDown(jumpKey) && !isDashing && stage >= 1) {
             Jump();
         }
 
@@ -64,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isCaving = false;
         }
+
+        
 
         //if (Input.GetKeyDown(bugKey))
         //{
