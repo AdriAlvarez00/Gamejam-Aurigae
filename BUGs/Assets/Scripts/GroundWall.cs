@@ -8,14 +8,12 @@ public class GroundWall : MonoBehaviour
     PlayerMovement Player;
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<PlayerMovement>();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && Input.GetKey(key) && Player.stage == 3)
+        if (collision.gameObject.CompareTag("Player") && Input.GetKey(key))
         {
-
             Destroy(this.gameObject);
         }
     }
