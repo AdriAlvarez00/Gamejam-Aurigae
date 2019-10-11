@@ -19,7 +19,7 @@ public class Bugable : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && Input.GetKey(key) && GameManager.instance.stage == 3)
+        if (collision.gameObject.tag == "Player" && Input.GetKey(key) && GameManager.instance.stage >= 2)
         {
             col.enabled = false;
             sp.sprite = bugged;
