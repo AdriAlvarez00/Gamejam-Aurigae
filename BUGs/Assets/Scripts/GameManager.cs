@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public int stage = 3;
+    public AudioClip clip2, clip3;
     void Awake()
     {
         if (instance == null) instance = this;
@@ -34,5 +35,17 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(1);
         }
         
+    }
+    private void OnLevelWasLoaded()
+    {
+        if (stage == 2)
+        {
+            gameObject.GetComponent<AudioSource>().clip = clip2;
+        }
+        else if (stage == 0)
+        {
+            gameObject.GetComponent<AudioSource>().clip = clip3;
+        }
+        gameObject.GetComponent<AudioSource>().Play();
     }
 }
